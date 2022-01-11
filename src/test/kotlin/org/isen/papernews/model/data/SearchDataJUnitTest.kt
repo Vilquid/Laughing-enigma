@@ -14,7 +14,7 @@ class SearchDataJUnitTest
 
         assertTrue(response.isSuccessful)
 
-        result.component1().also {
+        result.component1().also { it ->
             assertNotNull(it).also { println(it) }
         }
             ?.let {
