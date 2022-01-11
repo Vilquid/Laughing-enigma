@@ -14,13 +14,10 @@ class SearchDataJUnitTest
 
         assertTrue(response.isSuccessful)
 
-        result.component1().also
-        {
-            assertNotNull(it).also
-            {
-                println(it)
-            }
-        } ?.let {
+        result.component1().also { it ->
+            assertNotNull(it).also { println(it) }
+        }
+            ?.let {
             val data: SearchData = it
             println(data)
         }

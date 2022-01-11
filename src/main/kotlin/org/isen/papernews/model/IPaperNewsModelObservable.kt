@@ -1,6 +1,7 @@
 package org.isen.papernews.model
 
-interface IPaperNewsModelObservable {
 
+interface IPaperNewsModelObservable
+{
     fun updateNews(data:Any)
 }

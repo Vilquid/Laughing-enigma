@@ -1,10 +1,8 @@
 package org.isen.papernews.model
 
-import org.isen.papernews.model.data.SearchData
-import java.text.DateFormat
 
-interface IPaperNewsModel {
-
+interface IPaperNewsModel
+{
     fun register(listener:IPaperNewsModelObservable)
 
     fun unregister(listener: IPaperNewsModelObservable)
