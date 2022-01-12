@@ -5,9 +5,8 @@ import org.isen.papernews.model.IPaperNewsModelObservable
 
 interface IPaperNewsView : IPaperNewsModelObservable
 {
-    fun display()
+	fun display()
 
-    fun close()
+	fun close()
 
-//    abstract fun display() et abstract fun close()
 }

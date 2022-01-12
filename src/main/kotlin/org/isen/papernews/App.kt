@@ -13,7 +13,7 @@ fun main(args: Array<String>)
 {
 	val newsModel: IPaperNewsModel = PaperNewsModel();
 	val newsController: PaperNewsDefaultController = PaperNewsDefaultController(newsModel)
-	val newsView: IPaperNewsView = MainView(newsController, " Paper News App")
+	val newsView: IPaperNewsView = MainView(newsController, " Projet Paper News CIN 3 - Mathis de Gueydon")
 
 	newsController.displayAllView()
 }

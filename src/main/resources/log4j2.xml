@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <Configuration status="WARN" strict="true" name="XMLConfigTest" packages="org.apache.logging.log4j.test">
 	<Properties>
 		<Property name="filename">kweather.log</Property>

@@ -15,17 +15,17 @@ class PaperNewsModel: IPaperNewsModel
 {
 	companion object : Logging
 
-	// Clé API
+//	Clé API
 	private val apiKey: String = "6703d00fef054e638802d64457daf8a5"
 
-	// listeners
+//	listeners
 	private var listeners = mutableListOf<IPaperNewsModelObservable>()
 	init { listeners = ArrayList() }
 
-	// Notre variable Data qui va contenir les données récuperer grâce à la requête
+//	Notre variable Data qui va contenir les données récuperer grâce à la requête
 	internal var newsData : SearchData by Delegates.observable(SearchData())
 	{
-		_, oldValue, newValue -> logger.info("News data change")
+			_, _, newValue -> logger.info("News data change") // oldValue à la place du 2ème "_"
 
 		for (l in listeners)
 		{
@@ -34,35 +34,36 @@ class PaperNewsModel: IPaperNewsModel
 		}
 	}
 
-	// 3 fonctions qui vont traiter les paramètres entrés par l'utilisateur sur l'IHM : qu'il ait entré quelque chose ou non
-	private fun convertKeywords(keywords: String?): String
+//	3 fonctions qui vont traiter les paramètres entrés par l'utilisateur sur l'IHM : qu'il ait entré quelque chose ou non
+	private fun convertKeywords(keywords: String?) : String
 	{
 		return if (keywords == null) "" else "&q=$keywords"
 	}
 
-	private fun convertCategory(category: String?): String
+	private fun convertCategory(categorie: String?): String
 	{
-		return if (category == null) "" else "&category=$category"
+		return if (categorie == null) "" else "&category=$categorie"
 	}
 
-	private fun convertCountry(country: String?): String
+	private fun convertCountry(pays: String?): String
 	{
-		return if (country==null) "&country=fr" else "&country=$country"
+		return if (pays==null) "&country=fr" else "&country=$pays"
 	}
 
-	// Récup de data
-	private fun findNewsFor(keywords:String?, category:String?, country:String?)
+//	Récup de data
+	private fun findNewsFor(keywords: String?, categorie: String, pays: String)
 	{
-		"https://newsapi.org/v2/top-headlines?apiKey=${apiKey}${convertCountry(country)}${convertCategory(category)}${convertKeywords(keywords)}"
+		"https://newsapi.org/v2/top-headlines?apiKey=${apiKey}${convertCountry(pays)}${convertCategory(categorie)}${convertKeywords(keywords)}"
 			.httpGet()
-			.responseObject(SearchData.Deserializer()){_,response,result -> logger.info("StatusCode = ${response.statusCode}")
+			.responseObject(SearchData.Deserializer()) { _, response, result -> logger.info("StatusCode = ${response.statusCode}")
 
-				val(data,err) = result
-				newsData = data ?: SearchData().also { logger.warn("data is void") }
+				val(data, error) = result
+
+				newsData = data?: SearchData().also { logger.warn("Pas de données") }
 
 				if(response.statusCode == 429)
 				{
-					logger.info("Limit API request reached")
+					logger.info("Nombre maximal de requêtes vers l'API atteind")
 					exitProcess(0)
 				}
 			}
@@ -78,10 +79,18 @@ class PaperNewsModel: IPaperNewsModel
 		listeners.remove(listener)
 	}
 
-	// Lancer la fonction de récupération en co-routines depuis une autre class
-	override fun getNewsFor(keywords:String?, category:String?, country:String?)
+//	Lancer la fonction de récupération en co-routines depuis une autre class
+	override fun getNewsFor(keywords: String?, categorie: String?, pays:String?)
 	{
 		logger.info("findNews : $keywords")
-		GlobalScope.launch { findNewsFor(keywords,category,country) }
+		GlobalScope.launch {
+			if (categorie != null)
+			{
+				if (pays != null)
+				{
+					findNewsFor(keywords, categorie, pays)
+				}
+			}
+		}
 	}
 }

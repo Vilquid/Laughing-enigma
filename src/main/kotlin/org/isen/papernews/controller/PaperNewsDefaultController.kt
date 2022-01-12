@@ -6,14 +6,14 @@ import org.isen.papernews.view.IPaperNewsView
 
 class PaperNewsDefaultController  (var model : IPaperNewsModel)
 {
-	// Déclarations - initialisation des vues
+//	Déclarations - initialisation des vues
 	private var views = ArrayList<IPaperNewsView>()
 	init { this.views = ArrayList() }
 
-	// Faire appel à la fonction de récupération d'articles
-	fun findNews(keywords : String, category: String, country : String)
+//	Faire appel à la fonction de récupération d'articles
+	fun findNews(keywords : String, categorie: String, pays: String)
 	{
-		this.model.getNewsFor(keywords,category,country)
+		this.model.getNewsFor(keywords, categorie, pays)
 	}
 
 	fun displayAllView()
@@ -23,16 +23,16 @@ class PaperNewsDefaultController  (var model : IPaperNewsModel)
 		}
 	}
 
-	fun closeAllView()
+	fun registerView(view: IPaperNewsView)
 	{
-		views.forEach {
-			it.close()
-		}
-	}
-
-	fun registerView(v: IPaperNewsView)
-	{
-		this.views.add(v)
-		this.model.register(v)
+		this.views.add(view)
+		this.model.register(view)
 	}
 }
+
+//	fun closeAllView()
+//	{
+//		views.forEach {
+//			it.close()
+//		}
+//	}
