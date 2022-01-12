@@ -1,32 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration status="WARN">
-    <Properties>
-        <Property name="filename">kweather.log</Property>
-    </Properties>
 
-    <Appenders>
-        <Console name="Console" target="SYSTEM_OUT">
-            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %l - %msg%n"/>
-            <!-- <ThresholdFilter level="info"/> -->
-        </Console>
-
-        <File name="File" fileName="${filename}">
-            <PatternLayout>
-                <pattern>%d %p %C{1.} [%t] %m%n</pattern>
-            </PatternLayout>
-        </File>
-    </Appenders>
-
-    <Loggers>
-        <Root level="error">
-            <AppenderRef ref="File"/>
-        </Root>
-        <Logger name="org.isen.weather" level="info" additivity="false">
-            <AppenderRef ref="Console"/>
-            <AppenderRef ref="File"/>
-        </Logger>
-
-    </Loggers>
-
+<Configuration status="WARN" strict="true" name="XMLConfigTest" packages="org.apache.logging.log4j.test">
+	<Properties>
+		<Property name="filename">kweather.log</Property>
+	</Properties>
+	<Appenders>
+		<Console name="Console" target="SYSTEM_OUT">
+			<PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %l - %msg%n"/>
+		</Console>
+		<File name="File" fileName="${filename}">
+			<PatternLayout>
+				<pattern>%d %p %C{1.} [%t] %m%n</pattern>
+			</PatternLayout>
+		</File>
+	</Appenders>
+	<Loggers>
+		<Root level="error">
+			<AppenderRef ref="File"/>
+		</Root>
+		<Logger name="org.isen.papernews" level="info" additivity="false">
+			<AppenderRef ref="Console"/>
+			<AppenderRef ref="File"/>
+		</Logger>
+	</Loggers>
 </Configuration>
 

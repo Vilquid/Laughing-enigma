@@ -9,28 +9,32 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
-class GetNewsForJUnitTest {
+
+class GetNewsForJUnitTest
+{
     companion object : Logging
 
     @Test
-    fun testGetNewsFor() {
+    fun testGetNewsFor()
+    {
         val model: PaperNewsModel = PaperNewsModel();
-
 
         println(model.getNewsFor("foot","","fr"))
     }
 
     @Test
-    fun testObserverForNews() {
+    fun testObserverForNews()
+    {
         var pass = false
 
-        val myObserver = object : IPaperNewsModelObservable {
-            override fun updateNews(data: Any) {
+        val myObserver = object : IPaperNewsModelObservable
+        {
+            override fun updateNews(data: Any)
+            {
                 logger.info("updateNews")
                 pass = true
                 assertTrue(data is SearchData)
             }
-
         }
 
         val model = PaperNewsModel()
@@ -40,17 +44,22 @@ class GetNewsForJUnitTest {
         assertTrue(pass)
     }
 
-    @Test fun testGetNews(){
-        var passObserver:Boolean = false;
-        val model:PaperNewsModel = PaperNewsModel();
+    @Test
+    fun testGetNews()
+    {
+        var passObserver:Boolean = false
+        val model:PaperNewsModel = PaperNewsModel()
 
-        val myObserver = object : IPaperNewsModelObservable {
-            override fun updateNews(data: Any) {
-                passObserver = true;
+        val myObserver = object : IPaperNewsModelObservable
+        {
+            override fun updateNews(data: Any)
+            {
+                passObserver = true
                 logger.info("updatePresse with : $data")
                 assertEquals(SearchData::class.java , data::class.java)
             }
         }
+
         model.register(myObserver)
         model.getNewsFor("foot","","fr")
         logger.info("wait data ...")
