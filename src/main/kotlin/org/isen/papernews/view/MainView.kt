@@ -49,18 +49,19 @@ class MainView(controller: PaperNewsDefaultController, title: String) : IPaperNe
 		this.frame = JFrame()
 		this.frame.contentPane = makeUI()
 		this.frame.defaultCloseOperation = WindowConstants.EXIT_ON_CLOSE
-		this.frame.preferredSize = Dimension(1200, 900)
+		this.frame.preferredSize = Dimension(1200, 600)
 		this.frame.title = title
 		this.controller.registerView(this)
 		this.frame.pack()
 	}
 
 //	Maitre de l'interface
-	private fun makeUI(): JPanel
+	private fun makeUI() : JPanel
 	{
 		val contentPane = JPanel()
 
 		contentPane.layout = BorderLayout()
+//		contentPane.background = Color(77, 77, 77)
 		contentPane.add(createUIforEnterElements(), BorderLayout.NORTH)
 		contentPane.add(createUI_ArticleContent(), BorderLayout.CENTER)
 
@@ -74,32 +75,44 @@ class MainView(controller: PaperNewsDefaultController, title: String) : IPaperNe
 		val panelDataEnter = JPanel()
 		val panelButton = JPanel()
 
-		panelDataEnter.layout = GridLayout(2, 5)
+		panelDataEnter.layout = GridLayout(2, 7)
+		panelDataEnter.background = Color(77, 77, 77)
 		panelSearchBar.layout = BorderLayout()
-		panelButton.layout = GridLayout(1, 7)
+		panelButton.layout = GridLayout(3, 1)
+//		Dark mode sur la bande horizontale du bouton rechercher
+		panelButton.background = Color(77, 77, 77)
+		panelButton.preferredSize = Dimension(50, 100)
 
-		panelDataEnter.add(JLabel("Entrer un keyword :"))
 		panelDataEnter.add(JLabel(""))
-		panelDataEnter.add(JLabel("Entrer une categorie :"))
+		panelDataEnter.add(JLabel("Entrer un keyword :")).foreground = Color(200,200,200)
+//		Dark mode sur la bande horizontale au dessus du bouton rechercher
+		panelDataEnter.background = Color(77, 77, 77)
 		panelDataEnter.add(JLabel(""))
-		panelDataEnter.add(JLabel("Entrer un pays :"))
+		panelDataEnter.add(JLabel("Entrer une categorie :")).foreground = Color(200,200,200)
+		panelDataEnter.add(JLabel(""))
+		panelDataEnter.add(JLabel("Entrer un pays :")).foreground = Color(200,200,200)
+		panelDataEnter.add(JLabel(""))
+		panelDataEnter.add(JLabel(""))
 		panelDataEnter.add(fieldKeyword)
 		panelDataEnter.add(JLabel(""))
 		panelDataEnter.add(listCategory)
 		panelDataEnter.add(JLabel(""))
 		panelDataEnter.add(listCountry)
+		panelDataEnter.add(JLabel(""))
 
 		panelSearchBar.add(panelDataEnter, BorderLayout.CENTER)
 
 		val button = JButton("Rechercher")
+		button.background = Color(179, 0, 0)
+		button.isRolloverEnabled = true
+		button.border = BorderFactory.createMatteBorder(1, 1, 1, 1, Color(179, 0, 0))
+		button.foreground = Color(200,200,200)
 		button.addActionListener(this)
 
+//		Première ligne vide au dessus du bouton rechercher
 		panelButton.add(JLabel(""))
-		panelButton.add(JLabel(""))
-		panelButton.add(JLabel(""))
+//		Deuxième ligne (avec le bouton rechercher)
 		panelButton.add(button)
-		panelButton.add(JLabel(""))
-		panelButton.add(JLabel(""))
 		panelButton.add(JLabel(""))
 
 		panelSearchBar.add(panelButton, BorderLayout.SOUTH)
@@ -110,7 +123,7 @@ class MainView(controller: PaperNewsDefaultController, title: String) : IPaperNe
 	}
 
 //	Affichage des données reçues
-	private fun createUI_aritcle(data: ArticleData) : JPanel
+	private fun createUI_article(data: ArticleData) : JPanel
 	{
 		val articlePanel = JPanel(BorderLayout())
 		articlePanel.preferredSize = Dimension(frame.width, 100)
@@ -118,38 +131,47 @@ class MainView(controller: PaperNewsDefaultController, title: String) : IPaperNe
 //		Creation de la zone du panel dediee a l'image de l'article et délimitation des articles
 		val imageURL = URL("${data.urlToImage}")
 		val imageLabel = JLabel(ImageIcon(ImageIO.read(imageURL)))
-		articlePanel.border = BorderFactory.createMatteBorder(2, 0, 2, 0, Color.black)
-		imageLabel.preferredSize = Dimension(500, 100)
+		articlePanel.border = BorderFactory.createMatteBorder(0, 0, 4, 0, Color(147, 31, 31))
+		imageLabel.preferredSize = Dimension(200, 130)
+		imageLabel.background = Color(77, 77, 77)
 		articlePanel.add(imageLabel, BorderLayout.WEST)
 
 //		Creation de la zone du panel dédiée aux infos de l'article
 		val gridArticleInfo = JPanel(GridLayout(4, 1))
+		gridArticleInfo.background = Color(77, 77, 77)
+		gridArticleInfo.preferredSize = Dimension(500, 10)
 
 //		Gestion de l'affichage des données sur le panel
-		gridArticleInfo.add(JLabel("    Titre : ${data.title}"))
+		gridArticleInfo.add(JLabel("    Titre : ${data.title}")).foreground = Color(200,200,200)
 
 		if (data.author == null)
 		{
-			gridArticleInfo.add(JLabel("    Auteur/Autrice : Unconnu(e)"))
+			gridArticleInfo.add(JLabel("    Auteur/Autrice : Unconnu(e)")).foreground = Color(200,200,200)
 		}
 
 		else
 		{
-			gridArticleInfo.add(JLabel("    Auteur/Autrice : ${data.author}"))
+			gridArticleInfo.add(JLabel("    Auteur/Autrice : ${data.author}")).foreground = Color(200,200,200)
 		}
 
 		if (data.description == null)
 		{
-			gridArticleInfo.add(JLabel("    Description : Vide)"))
+			gridArticleInfo.add(JLabel("    Description : Vide)")).foreground = Color(200,200,200)
 		}
 
 		else
 		{
-			gridArticleInfo.add(JLabel("    Description : ${data.description}"))
+			gridArticleInfo.add(JLabel("    Description : ${data.description}")).foreground = Color(200,200,200)
 		}
+
+		val panelButtons = JPanel(GridLayout(1, 2))
 
 //		Création d'un bouton permettant de visualiser l'article dans un navigateur
 		val urlButton = JButton("Ouvrir dans un moteur de recherche")
+		urlButton.background = Color(179, 0, 0)
+		urlButton.isRolloverEnabled = true
+		urlButton.border = BorderFactory.createMatteBorder(1, 1, 1, 1, Color(179, 0, 0))
+		urlButton.foreground = Color(200,200,200)
 		urlButton.addActionListener {
 			val runtime = Runtime.getRuntime()
 			runtime.exec("rundll32 url.dll,FileProtocolHandler ${data.url}")
@@ -157,13 +179,19 @@ class MainView(controller: PaperNewsDefaultController, title: String) : IPaperNe
 
 //		Création d'un bouton permettant de transformer l'article en pdf
 		val pdfButton = JButton("Ouvrir l'article en pdf")
+		pdfButton.background = Color(179, 0, 0)
+		pdfButton.isRolloverEnabled = true
+		pdfButton.border = BorderFactory.createMatteBorder(1, 1, 1, 1, Color(179, 0, 0))
+		pdfButton.foreground = Color(200,200,200)
 		pdfButton.addActionListener {
 			val runtime = Runtime.getRuntime()
-			runtime.exec("rundll32 pdf.dll,")
+			runtime.exec("rundll32 exp_pdf.dll,FileProtocolHandler ${data.url}")
 		}
 
-		articlePanel.add(urlButton, BorderLayout.EAST)
-		articlePanel.add(pdfButton, BorderLayout.PAGE_END)
+		panelButtons.add(urlButton)
+		panelButtons.add(pdfButton)
+
+		articlePanel.add(panelButtons, BorderLayout.SOUTH)
 		articlePanel.add(gridArticleInfo, BorderLayout.CENTER)
 
 		return articlePanel
@@ -207,7 +235,7 @@ class MainView(controller: PaperNewsDefaultController, title: String) : IPaperNe
 		for (item: ArticleData in data.articles)
 		{
 			logger.debug("New articles: $item")
-			panelForAllArticle.add(createUI_aritcle(item))
+			panelForAllArticle.add(createUI_article(item))
 		}
 
 		articleInfo.add(scrollPanelOfArticles, BorderLayout.EAST)

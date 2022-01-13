@@ -20,3 +20,4 @@ Différentes fonctionalités sont présentes :
 - Navigation par thème
 - Export en pdf
 - Recherche avancée
+- Le mode sombre est natif
