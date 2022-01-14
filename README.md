@@ -16,8 +16,9 @@ L’interface graphique est faite en Swing.
 
 Différentes fonctionalités sont présentes :
 - Lister les articles du moment dans une fenêtre
+- La langue permet de trier les articles
 - Afficher le détail d'un article dans une autre fenêtre
 - Navigation par thème
-- Export en pdf
-- Recherche avancée
 - Le mode sombre est natif
+
+L'export d'un article en PDF sera disponible dans la V2.0

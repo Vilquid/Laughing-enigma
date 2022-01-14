@@ -17,53 +17,54 @@ class GetNewsForJUnitTest
 	{
 		val model = PaperNewsModel()
 
-		println(model.getNewsFor("macron","general","fr"))
+		println(model.getNewsFor("foot","sports","fr"))
 	}
 
 	@Test
 	fun testObserverForNews()
 	{
-		var pass = false
+		var OK = false
 
-		val myObserver = object : IPaperNewsModelObservable
+		val observer = object : IPaperNewsModelObservable
 		{
 			override fun updateNews(data: Any)
 			{
-				logger.info("updateNews")
-				pass = true
+				logger.info("Fonction updateNews")
+				OK = true
 				assertTrue(data is SearchData)
 			}
 		}
 
 		val model = PaperNewsModel()
-		model.register(myObserver)
+
+		model.register(observer)
 		model.newsData = SearchData()
 
-		assertTrue(pass)
+		assertTrue(OK)
 	}
 
 	@Test
-	fun testGetNews()
+	fun test_GetNews()
 	{
-		var passObserver = false
+		var OK_observer = false
 		val model = PaperNewsModel()
 
-		val myObserver = object : IPaperNewsModelObservable
+		val observer = object : IPaperNewsModelObservable
 		{
 			override fun updateNews(data: Any)
 			{
-				passObserver = true
+				OK_observer = true
 				logger.info("updatePresse with : $data")
 				assertEquals(SearchData::class.java , data::class.java)
 			}
 		}
 
-		model.register(myObserver)
-		model.getNewsFor("macron","general","fr")
+		model.register(observer)
+		model.getNewsFor("foot","sports","fr")
 		logger.info("Attente ...")
-		Thread.sleep(10000)
+		Thread.sleep(5000)
 
-		assertTrue(passObserver,"Après mise à jour de la propriété Article")
-		assertEquals(2,model.newsData.articles.size)
+		assertTrue(OK_observer,"Après mise à jour de la propriété Article")
+		assertEquals(2, model.newsData.articles.size)
 	}
 }

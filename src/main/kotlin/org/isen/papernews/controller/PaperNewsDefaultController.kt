@@ -11,7 +11,7 @@ class PaperNewsDefaultController  (var model : IPaperNewsModel)
 	init { this.views = ArrayList() }
 
 //	Faire appel à la fonction de récupération d'articles
-	fun findNews(keywords : String, categorie: String, pays: String)
+	fun findNews(keywords: String, categorie: String, pays: String)
 	{
 		this.model.getNewsFor(keywords, categorie, pays)
 	}
@@ -29,10 +29,3 @@ class PaperNewsDefaultController  (var model : IPaperNewsModel)
 		this.model.register(view)
 	}
 }
-
-//	fun closeAllView()
-//	{
-//		views.forEach {
-//			it.close()
-//		}
-//	}

@@ -21,7 +21,7 @@ class MainView(controller: PaperNewsDefaultController, title: String) : IPaperNe
 	companion object : Logging
 
 //	Listes pour JCombobox
-	private val l_categorie: Array<String> = arrayOf("general", "business", "entertainment", "health", "science", "sports", "technology")
+	private val l_categorie: Array<String> = arrayOf("sports", "general", "business", "entertainment", "health", "science", "technology")
 	private val l_pays: Array<String> = arrayOf("fr", "us", "ae", "ar", "at", "au", "be", "bg", "br", "ca", "ch", "cn", "co", "cu", "cz", "de", "eg", "gb", "gr", "hk", "hu", "id", "ie", "il", "in", "it", "jp", "kr", "lt", "lv", "ma", "mx", "my", "ng", "nl", "no", "nz", "ph", "pl", "pt", "ro", "rs", "ru", "sa", "se", "sg", "si", "sk", "th", "tr", "tw", "ua", "ve", "za")
 
 //	Frame principale et controller
@@ -61,15 +61,14 @@ class MainView(controller: PaperNewsDefaultController, title: String) : IPaperNe
 		val contentPane = JPanel()
 
 		contentPane.layout = BorderLayout()
-//		contentPane.background = Color(77, 77, 77)
-		contentPane.add(createUIforEnterElements(), BorderLayout.NORTH)
+		contentPane.add(creer_UI_elements_recherche(), BorderLayout.NORTH)
 		contentPane.add(createUI_ArticleContent(), BorderLayout.CENTER)
 
 		return contentPane
 	}
 
 //	Panel gestion des entrées utilisateurs
-	private fun createUIforEnterElements() : JPanel
+	private fun creer_UI_elements_recherche() : JPanel
 	{
 		val panelSearchBar = JPanel()
 		val panelDataEnter = JPanel()
@@ -77,18 +76,19 @@ class MainView(controller: PaperNewsDefaultController, title: String) : IPaperNe
 
 		panelDataEnter.layout = GridLayout(2, 7)
 		panelDataEnter.background = Color(77, 77, 77)
+
+		panelSearchBar.background = Color(77, 77, 77)
 		panelSearchBar.layout = BorderLayout()
-		panelButton.layout = GridLayout(3, 1)
-//		Dark mode sur la bande horizontale du bouton rechercher
+
+		panelButton.layout = GridLayout(3, 3)
 		panelButton.background = Color(77, 77, 77)
-		panelButton.preferredSize = Dimension(50, 100)
+//		panelButton.preferredSize = Dimension(50, 100)
 
 		panelDataEnter.add(JLabel(""))
 		panelDataEnter.add(JLabel("Entrer un keyword :")).foreground = Color(200,200,200)
-//		Dark mode sur la bande horizontale au dessus du bouton rechercher
 		panelDataEnter.background = Color(77, 77, 77)
 		panelDataEnter.add(JLabel(""))
-		panelDataEnter.add(JLabel("Entrer une categorie :")).foreground = Color(200,200,200)
+		panelDataEnter.add(JLabel("Entrer une catégorie :")).foreground = Color(200,200,200)
 		panelDataEnter.add(JLabel(""))
 		panelDataEnter.add(JLabel("Entrer un pays :")).foreground = Color(200,200,200)
 		panelDataEnter.add(JLabel(""))
@@ -123,7 +123,7 @@ class MainView(controller: PaperNewsDefaultController, title: String) : IPaperNe
 	}
 
 //	Affichage des données reçues
-	private fun createUI_article(data: ArticleData) : JPanel
+	private fun creer_UI_article(data: ArticleData) : JPanel
 	{
 		val articlePanel = JPanel(BorderLayout())
 		articlePanel.preferredSize = Dimension(frame.width, 100)
@@ -131,7 +131,6 @@ class MainView(controller: PaperNewsDefaultController, title: String) : IPaperNe
 //		Creation de la zone du panel dediee a l'image de l'article et délimitation des articles
 		val imageURL = URL("${data.urlToImage}")
 		val imageLabel = JLabel(ImageIcon(ImageIO.read(imageURL)))
-		articlePanel.border = BorderFactory.createMatteBorder(0, 0, 4, 0, Color(147, 31, 31))
 		imageLabel.preferredSize = Dimension(200, 130)
 		imageLabel.background = Color(77, 77, 77)
 		articlePanel.add(imageLabel, BorderLayout.WEST)
@@ -167,10 +166,10 @@ class MainView(controller: PaperNewsDefaultController, title: String) : IPaperNe
 		val panelButtons = JPanel(GridLayout(1, 2))
 
 //		Création d'un bouton permettant de visualiser l'article dans un navigateur
-		val urlButton = JButton("Ouvrir dans un moteur de recherche")
+		val urlButton = JButton("Ouvrir dans une autre fenêtre")
 		urlButton.background = Color(179, 0, 0)
 		urlButton.isRolloverEnabled = true
-		urlButton.border = BorderFactory.createMatteBorder(1, 1, 1, 1, Color(179, 0, 0))
+		urlButton.border = BorderFactory.createMatteBorder(2, 20 , 2, 1, Color(200,200,200))
 		urlButton.foreground = Color(200,200,200)
 		urlButton.addActionListener {
 			val runtime = Runtime.getRuntime()
@@ -179,13 +178,13 @@ class MainView(controller: PaperNewsDefaultController, title: String) : IPaperNe
 
 //		Création d'un bouton permettant de transformer l'article en pdf
 		val pdfButton = JButton("Ouvrir l'article en pdf")
+//		val newsView: IPaperNewsView = ArticleView(newsController, " Projet Paper News CIN 3 - Mathis de Gueydon")
 		pdfButton.background = Color(179, 0, 0)
 		pdfButton.isRolloverEnabled = true
-		pdfButton.border = BorderFactory.createMatteBorder(1, 1, 1, 1, Color(179, 0, 0))
+		pdfButton.border = BorderFactory.createMatteBorder(2, 1, 2, 17, Color(200,200,200))
 		pdfButton.foreground = Color(200,200,200)
 		pdfButton.addActionListener {
-			val runtime = Runtime.getRuntime()
-			runtime.exec("rundll32 exp_pdf.dll,FileProtocolHandler ${data.url}")
+//			creer_UI_pour_1_article(data)
 		}
 
 		panelButtons.add(urlButton)
@@ -235,7 +234,7 @@ class MainView(controller: PaperNewsDefaultController, title: String) : IPaperNe
 		for (item: ArticleData in data.articles)
 		{
 			logger.debug("New articles: $item")
-			panelForAllArticle.add(createUI_article(item))
+			panelForAllArticle.add(creer_UI_article(item))
 		}
 
 		articleInfo.add(scrollPanelOfArticles, BorderLayout.EAST)
